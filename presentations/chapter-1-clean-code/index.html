@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="../../bower_components/reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="../../bower_components/reveal.js/css/theme/simple.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../../bower_components/reveal.js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+		 link.href = window.location.search.match( /print-pdf/gi ) ? '../../bower_components/reveal.js/css/print/pdf.css' : '../../bower_components/reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				  <section>
+              <h1>Tech talks</h1>
+              <h2>Clean Code</h2>
+              <h3>Introduction</h3>
+          </section>
+				  <section>
+              <h2>What to expect</h2>
+              <ul>
+                  <li class="fragment">You'll learn a lot about code in general</li>
+                  <li class="fragment">You'll be able to tell the difference between good code and bad code</li>
+                  <li class="fragment">You'll know how to convert bad code into good code</li>
+              </ul>
+          </section>
+          <section>
+              <h2>Why it matters?</h2>
+              <p>
+              <em class="fragment">"As long is it compiles fine and does what its supposed to do, why does it matter whether its good code or bad code?"</em>
+              </p>
+              <ul>
+                  <li class="fragment">Reading : Writing :: 10:1</li>
+                  <li class="fragment">Loss in productivity</li>
+                  <li class="fragment">Regression bugs</li>
+              </ul>
+          </section>
+          <section>
+              <h2>So, why do we write bad code?</h2>
+              <ul>
+                  <li class="fragment">We're always in rush</li>
+                  <li class="fragment">We get tired/bored</li>
+                  <li class="fragment">Managers don't credit good code</li>
+                  <li class="fragment">We think working mess is much better than nothing</li>
+              </ul>
+          </section>
+          <section>
+              <img alt="Total cost of owning a mess" src="assets/tco.jpg"/>
+          </section>
+          <section>
+              <h2>Who is to blame?</h2>
+              <ul>
+                  <li class="fragment">
+                      Schedules/Managers?
+                      <ul>
+                          <li class="fragment">Managers do want good code implicitly</li>
+                          <li class="fragment">They consult us before committing to a deadline</li>
+                      </ul>
+                  </li>
+                  <li class="fragment">
+                      Developers?
+                      <ul>
+                          <li class="fragment">Yes, kind of :)</li>
+                          <ul>
+                              <li class="fragment">
+                                  Surgeon and Patient example
+                                  <span class="fragment">
+                                      <small>Its surgeon's job to sanitize the equipment before operation, even if patient forces to skip it to "speed up" the surgery.</small>
+                                  </span>
+                              </li>
+                              <li class="fragment">Its all about being passionate</li>
+                          </ul>
+                      </ul>
+                      <span class="fragment"><em>"The only way to suceed <mark>consistently</mark> is to keep the code clean"</em></span>
+                  </li>
+              </ul>
+          </section>
+          <section>
+              <h2>Clean Code is Art</h2>
+              <ul>
+                  <li class="fragment">Beautiful painting vs Normal painting</li>
+                  <li class="fragment">Delicious food vs Normal food</li>
+                  <li class="fragment">Good music vs Normal music</li>
+                  <li class="fragment">Good code vs Normal code</li>
+              </ul>
+              <p>
+              <em class="fragment">"A normal programmer can look at code and tell you that its bad code. A good programmer can convert it into good code."</em>
+              </p>
+          </section>
+          <section>
+              <h3>So, What is good code?</h3>
+              <section>
+                  <p class="fragment">
+                      <em>I like my code to be <mark>elegant and efficient</mark>. The logic should be straightforward to make it <mark>hard for bugs to hide</mark>, the dependencies minimal to ease maintenance, error handling complete according to an articulated strategy, and performance close to optimal so as <mark>not to tempt people to make the code messy</mark> with unprincipled optimizations. Clean code does one thing well. <br />-- Bjarne Stroustrope (Inventor of C++)
+                      </em>
+                  </p>
+              </section>
+              <section>
+                  <em>Clean code is <mark>simple and direct</mark>. Clean code <mark>reads like well-written prose</mark>. Clean code <mark>never obscures the designer’s intent</mark> but rather is full of crisp abstractions and straightforward lines of control. <br />-- Grady Booch (Author: Object Oriented Analysis and Design with Applications)
+                  </em>
+              </section>
+              <section>
+                  <h4>Multiple schools of thought</h4>
+                  <ul>
+                      <li class="fragment">You might not agree with everything in someones definition of clean code</li>
+                      <li class="fragment">The goal is to have your own guidelines and defend them passionately</li>
+                  </ul>
+              </section>
+          </section>
+          <section>
+              <h2>The Boy Scout Rule</h2>
+              <p class="fragment">"Always leave the code cleaner than you found it"</p>
+          </section>
+          <section>
+              <h2>Remember</h2>
+              <img alt="" src="assets/bike.gif"/>
+          </section>
+			</div>
+		</div>
+
+		<script src="../../bower_components/headjs/dist/1.0.0/head.min.js"></script>
+		<script src="../../bower_components/reveal.js/js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: '../../bower_components/reveal.js/plugin/markdown/marked.js' },
+					{ src: '../../bower_components/reveal.js/plugin/markdown/markdown.js' },
+					{ src: '../../bower_components/reveal.js/plugin/notes/notes.js', async: true },
+					{ src: '../../bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
