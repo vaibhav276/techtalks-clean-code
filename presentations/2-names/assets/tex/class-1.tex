@@ -1,0 +1,27 @@
+\documentclass[border=5pt,tikz]{standalone}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+
+\begin{document}
+\begin{tikzpicture}
+  \umlclass{Shipping}  {
+    -- firstName : string \\
+    -- middleName : string \\
+    -- lastName : string \\
+    -- houseNumber : int \\
+    -- street : string \\
+    -- area : string \\
+    -- city : string \\
+    -- state : string \\
+    -- country : string \\
+    -- pincode : int \\
+    -- amount : float \\
+  } {
+    + getFirstName(): string \\
+    + setFirstName(string): void \\
+    \ldots \\
+    + getAmount() : float \\
+    + setAmount(float) : void
+  }
+\end{tikzpicture}
+\end{document}
