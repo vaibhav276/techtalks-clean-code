@@ -1,0 +1,218 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Functions</title>
+
+		<link rel="stylesheet" href="../../bower_components/reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="../../bower_components/reveal.js/css/theme/simple.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../../assets/css/solarized-light.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+		 link.href = window.location.search.match( /print-pdf/gi ) ? '../../bower_components/reveal.js/css/print/pdf.css' : '../../bower_components/reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				  <section>
+              <h1>Tech talks</h1>
+              <h2>Clean Code</h2>
+              <h3>Functions</h3>
+          </section>
+          <section>
+              <h2>Levels of abstraction</h2>
+              <section>
+                  <h4>Route map - version 1</h4>
+                  <pre>
+Exit from gate number 5
+Take left
+Go straight for 100 meters then take a U turn
+Go straight for 800 meters then take a left turn
+Go straight for 1200 meters then take a U turn
+Go straight for 900 meters. Destination will be on the left
+                  </pre>
+              </section>
+              <section>
+                  <h4>Route map - version 2</h4>
+                  <pre>
+Go down to ground floor using elevator
+You need to press the "G" button for requesting ground floor
+If the elevator is not working, take stairs
+Walk out of building and go to parking lot
+Pick up your vehicle and exit from gate number 5
+Take left
+You will see Inorbit mall on the left.
+Don't go in there if you don't have shopping to do
+Go straight for 100 meters and take U turn.
+Be careful about the traffic coming from left
+Go straight for 100 meters, you'll find an overpass.
+Slow down near the zebra crossing
+Keep going straight until you find a left turn
+Don't turn here. There is another better way.
+But turn here if its raining
+Take left on next junction
+                  </pre>
+              </section>
+          </section>
+          <section>
+              <h2>Small functions</h2>
+              <ul>
+                  <li class="fragment">Reduce indentation and blocks by breaking into more functions</li>
+                  <li class="fragment">Do one thing, and one thing only</li>
+                  <li class="fragment">How to decide level of abstraction?
+                      <ul>
+                          <li class="fragment">One level lower than its name</li>
+                      </ul>
+                  </li>
+                  <li class="fragment">Step down rule</li>
+              </ul>
+          </section>
+          <section>
+              <h2>Switch statements</h2>
+              <section>
+              <pre>
+                  <code data-trim>
+public Money calculatePay(Employee e)
+throws InvalidEmployeeType {
+    switch (e.type) {
+    case COMMISSIONED:
+        return calculateCommissionedPay(e);
+    case HOURLY:
+        return calculateHourlyPay(e);
+    case SALARIED:
+        return calculateSalariedPay(e);
+    default:
+        throw new InvalidEmployeeType(e.type);
+    }
+}
+                  </code>
+              </pre>
+              </section>
+              <section>
+                  <h3>Problems?</h3>
+                  <ul>
+                      <li class="fragment">Violates SR principle</li>
+                      <li class="fragment">Violates OC principle</li>
+                      <li class="fragment"><em><mark>More functions will have the same switch</mark></em></li>
+                  </ul>
+              </section>
+              <section>
+                  <h3>Solution?</h3>
+                  <p class="fragment">Abstract Factory Pattern</p>
+              </section>
+          </section>
+          <section>
+              <h2>Arguments</h2>
+              <ul>
+                  <li class="fragment">Few is better</li>
+                  <li class="fragment">OO Code - use members</li>
+                  <li class="fragment">Functional code - use bounded context</li>
+                  <li class="fragment">Transformation functions - return values</li>
+                  <li class="fragment">Avoid boolean args that reuse functionality</li>
+                  <li class="fragment">Variable args count as one</li>
+              </ul>
+          </section>
+          <section>
+              <h2>Side effects</h2>
+              <pre>
+                  <code data-trim>
+public class UserValidator {
+    private Cryptographer cryptographer;
+
+    public boolean checkPassword(String userName,
+                                 String password) {
+        User user = UserGateway.findByName(userName);
+        if (user != User.NULL) {
+            String codedPhrase = user.getPhraseEncodedByPassword();
+            String phrase = cryptographer.decrypt(codedPhrase,
+                                                  password);
+            if ("Valid Password".equals(phrase)) {
+                Session.initialize();
+                return true;
+            }
+        }
+        return false;
+    }
+}
+                  </code>
+              </pre>
+          </section>
+          <section>
+              <h2>Command Query Separation</h2>
+              <pre>
+                  <code data-trim>
+if (set("username", "unclebob")) {
+   ...
+}
+                  </code>
+              </pre>
+              versus
+              <pre>
+                  <code data-trim>
+if (attributeExists("username")) {
+    setAttribute("username", "unclebob");
+    ...
+}
+                  </code>
+              </pre>
+          </section>
+          <section>
+              <h2>Return codes vs Exceptions</h2>
+              <ul>
+                  <li class="fragment">Prefer exceptions</li>
+                  <li class="fragment">Extract try catch blocks
+                      <ul><li>Add throws clause in actual implementations</li></ul>
+                  </li>
+                  <li class="fragment">Error handling is an abstraction level</li>
+                  <li class="fragment">Error Enums vs Exceptions
+                      <ul>
+                          <li class="fragment">Exception hierarchy prevents recompilation when new errors are added</li>
+                      </ul>
+                  </li>
+              </ul>
+          </section>
+          <section>
+              <h2>Code reuse</h2>
+              <p>Identify parts of code that are <mark>generic</mark> in nature and extract them into separate functions so that others can also use it and benefit from bug fixes in it</p>
+          </section>
+          <section>
+              <h2>Structured programming principle</h2>
+              <p>Prefer having less exit points from the function</p>
+              <p class="fragment">...unless more exit points improve readability</p>
+          </section>
+          <section>
+              <h2>Practice tip</h2>
+              <p>Write function in multiple passes. Think through one particular best practice in each pass, and incrementally improve it.</p>
+          </section>
+			</div>
+		</div>
+
+		<script src="../../bower_components/headjs/dist/1.0.0/head.min.js"></script>
+		<script src="../../bower_components/reveal.js/js/reveal.js"></script>
+
+		<script>
+		 // More info about config & dependencies:
+			      // - https://github.com/hakimel/reveal.js#configuration
+		 // - https://github.com/hakimel/reveal.js#dependencies
+		 Reveal.initialize({
+				 dependencies: [
+					   { src: '../../bower_components/reveal.js/plugin/markdown/marked.js' },
+					   { src: '../../bower_components/reveal.js/plugin/markdown/markdown.js' },
+					   { src: '../../bower_components/reveal.js/plugin/notes/notes.js', async: true },
+					   { src: '../../bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+             { src: '../../bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true }
+				 ]
+		 });
+		</script>
+	</body>
+</html>
