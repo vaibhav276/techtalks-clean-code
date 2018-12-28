@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Objects and Data Structures</title>
+
+		<link rel="stylesheet" href="../../bower_components/reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="../../bower_components/reveal.js/css/theme/simple.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="../../assets/css/solarized-light.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+		 link.href = window.location.search.match( /print-pdf/gi ) ? '../../bower_components/reveal.js/css/print/pdf.css' : '../../bower_components/reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				  <section>
+              <h1>Tech talks</h1>
+              <h2>Clean Code</h2>
+              <h3>Objects and Data Structures</h3>
+          </section>
+          <section>
+              <h2>Data Abstraction</h2>
+              <section>
+                  <h3>Hiding the implementation</h3>
+                  <pre>
+                      <code data-trim>
+public class Point {
+    public double x;
+    public double y;
+
+    public double getX();
+    public double getY();
+    public void setX(double);
+    public void setY(double)
+}
+                      </code>
+                  </pre>
+              </section>
+              <section>
+                  <h3>Hiding the implementation</h3>
+                  <pre>
+                      <code data-trim>
+public interface Point {
+    double getX();
+    double getY();
+    void setCartesian(double x, double y);
+    double getR();
+    double getTheta();
+    void setPolar(double r, double theta);
+}
+                      </code>
+                  </pre>
+              </section>
+              <section>
+                  <h3>Exposing an interface</h3>
+                  <pre>
+                      <code data-trim>
+public interface Vehicle {
+  double getFuelTankCapacityInLitres();
+  double getLitresOfPetrol();
+}
+                      </code>
+                  </pre>
+              </section>
+              <section>
+                  <h3>Exposing an interface</h3>
+                  <pre>
+                      <code data-trim>
+public interface Vehicle {
+  double getPercentFuelRemaining();
+}
+                      </code>
+                  </pre>
+              </section>
+          </section>
+          <section>
+              <h2>Data-Object Asymmetry</h2>
+              <section>
+                  <ul>
+                      <li> Objects hide implementation behind abstractions and expose functions </li>
+                      <li> Data structures expose data and have no meaningful functions </li>
+                  </ul>
+              </section>
+              <section>
+                  <pre>
+                      <code data-trim>
+public class Square {
+  public Point topLeft;
+  public double side;
+}
+public class Rectangle {
+  public Point topLeft;
+  public double height;
+  public double width;
+}
+public class Circle {
+  public Point center;
+  public double radius;
+}
+public class Geometry {
+  public final double PI = 3.141592653589793;
+  public double area(Object shape) throws NoSuchShapeException
+  {
+    if (shape instanceof Square) {
+      Square s = (Square)shape;
+      return s.side * s.side;
+    }
+    else if (shape instanceof Rectangle) {
+      Rectangle r = (Rectangle)shape;
+      return r.height * r.width;
+    }
+    else if (shape instanceof Circle) {
+      Circle c = (Circle)shape;
+      return PI * c.radius * c.radius;
+    }
+    throw new NoSuchShapeException();
+  }
+}
+                      </code>
+                  </pre>
+              </section>
+              <section>
+                  <pre>
+                      <code data-trim>
+public class Square implements Shape {
+  private Point topLeft;
+  private double side;
+  public double area() {
+    return side*side;
+  }
+}
+public class Rectangle implements Shape {
+  private Point topLeft;
+  private double height;
+  private double width;
+  public double area() {
+    return height * width;
+  }
+}
+public class Circle implements Shape {
+  private Point center;
+  private double radius;
+  public final double PI = 3.141592653589793;
+  public double area() {
+    return PI * radius * radius;
+  }
+}
+                      </code>
+                  </pre>
+              </section>
+          </section>
+          <section>
+              <h2>Law of Demeter</h2>
+              <section>
+                  <p>A module should not know about the innards of the object it
+                      manipulates</p>
+                  <p>A method <em>f</em> of class <em>C</em> should only call
+                      methods of:</p>
+                  <ul>
+                      <li> C </li>
+                      <li> object created by <em>f</em> </li>
+                      <li> object passed as argument to <em>f</em> </li>
+                      <li> object held in instance variable of <em>C</em> </li>
+                  </ul>
+              </section>
+              <section>
+                  <h3>Train wrecks</h3>
+                  <pre class="fragment">
+                      <code data-trim>
+final String outputDir = ctxt.getOptions().getScratchDir().getAbsolutePath();
+                      </code>
+                  </pre>
+                  <pre class="fragment">
+                      <code data-trim>
+final String outputDir = ctxt.options.scratchDir.absolutePath;
+                      </code>
+                  </pre>
+              </section>
+              <section>
+                  <h3>Hybrids</h3>
+                  <p>Contain properties of Objects as well as Data Structures</p>
+              </section>
+              <section>
+                  <h3>Hiding the structure</h3>
+                  <pre class="fragment">
+                      <code data-trim>
+// How the outputDir is being used in the function down the line
+String outFile = outputDir + "/" + className.replace('.', '/') + ".class";
+FileOutputStream fout = new FileOutputStream(outFile);
+BufferedOutputStream bos = new BufferedOutputStream(fout);
+
+// Expose this from Context class
+BufferedOutputStream bos = ctxt.createScratchFileStream(classFileName);
+                      </code>
+                  </pre>
+              </section>
+          </section>
+          <section>
+              <h2>Data Transfer Objects</h2>
+              <ul>
+                  <li class="fragment">Java EJBs</li>
+                  <li class="fragment">Active Record Pattern
+                      <ul>
+                          <li>Properties correspond to DB columns</li>
+                          <li>Functions correspond to CRUD operations</li>
+                          <li>FK relations expressed through Association/Composition</li>
+                          <li class="fragment">
+                              Concerns
+                              <ul>
+                                  <li>Testability</li>
+                                  <li>SRP</li>
+                                  <li>Distributed databases</li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </section>
+			</div>
+		</div>
+
+		<script src="../../bower_components/headjs/dist/1.0.0/head.min.js"></script>
+		<script src="../../bower_components/reveal.js/js/reveal.js"></script>
+
+		<script>
+		 // More info about config & dependencies:
+			      // - https://github.com/hakimel/reveal.js#configuration
+		 // - https://github.com/hakimel/reveal.js#dependencies
+		 Reveal.initialize({
+				 dependencies: [
+					   { src: '../../bower_components/reveal.js/plugin/markdown/marked.js' },
+					   { src: '../../bower_components/reveal.js/plugin/markdown/markdown.js' },
+					   { src: '../../bower_components/reveal.js/plugin/notes/notes.js', async: true },
+					   { src: '../../bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+             { src: '../../bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true }
+				 ]
+		 });
+		</script>
+	</body>
+</html>
